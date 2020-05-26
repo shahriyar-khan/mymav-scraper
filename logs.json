@@ -1,0 +1,38 @@
+{
+    "3303-001": {
+        "timestamp": "2020-05-25 19:43:01",
+        "course_name": "Networks",
+        "course_time": "TT 11-12",
+        "waitlisted": "7"
+    },
+    "3303-003": {
+        "timestamp": "2020-05-25 19:43:01",
+        "course_name": "Networks",
+        "course_time": "TT 2-3",
+        "waitlisted": "4"
+    },
+    "3330-001": {
+        "timestamp": "2020-05-25 19:43:01",
+        "course_name": "E-Commerce",
+        "course_time": "Online",
+        "waitlisted": "16"
+    },
+    "4305-002": {
+        "timestamp": "2020-05-25 19:43:01",
+        "course_name": "Application Development (Java)",
+        "course_time": "MW 5-7",
+        "waitlisted": "6"
+    },
+    "4305-001": {
+        "timestamp": "2020-05-25 19:43:01",
+        "course_name": "Application Development (Java)",
+        "course_time": "MW 4-5",
+        "waitlisted": "2"
+    },
+    "3304-003": {
+        "timestamp": "2020-05-25 19:43:01",
+        "course_name": "Database Systems",
+        "course_time": "TT 5-7",
+        "waitlisted": "2"
+    }
+}

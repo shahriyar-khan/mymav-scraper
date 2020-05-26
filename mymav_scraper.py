@@ -1,4 +1,6 @@
 import time
+import json
+import datetime
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -8,7 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 
-path = "\\mymav_scraper\\chromedriver.exe"
+PATH = "/usr/bin/chromedriver"
 
 
 def main():
@@ -16,7 +18,7 @@ def main():
     # Initialize Driver (Headless)
     options = Options()
     options.headless = True
-    driver = webdriver.Chrome(path, options=options)
+    driver = webdriver.Chrome(PATH, options=options)
     actions = ActionChains(driver)
     scraper(driver, actions)
     driver.quit()
@@ -71,22 +73,69 @@ def scraper(driver, actions):
     actions.send_keys(Keys.ENTER).perform()
     time.sleep(4)
     f = driver.find_element(By.ID, "SSR_CLSRCH_F_WK_SSR_DESCR50_1$2").text  # INSY 3304-003
-    print_table(a, b, c, d, e, f)
+    check(a, b, c, d, e, f)
 
 
-def print_table(a, b, c, d, e, f):
-    print()
-    print("[Results]")
+def check(a, b, c, d, e, f):
     lists = [a, b, c, d, e, f]
     if any("Open" in x for x in lists):
-        print("OPEN: There's a class in this list that is open right now, check manually!")
+        print("OPEN: There's a class in this list that is open right now!")
     elif any("Waitlist" in x for x in lists):
-        print("3303-001 (Networks): {}".format(int(a[32:34]) - int(a[25:28])), "people waitlisted")
-        print("3303-003 (Networks): {}".format(int(b[32:34]) - int(b[25:28])), "people waitlisted")
-        print("3330-001 (E-Commerce): {}".format(int(c[32:34]) - int(c[25:28])), "people waitlisted")
-        print("4305-002 (Java I): {}".format(int(d[32:34]) - int(d[25:28])), "people waitlisted")
-        print("4305-001 (Java I): {}".format(int(e[32:34]) - int(e[25:28])), "people waitlisted")
-        print("3304-003 (Database): {}".format(int(f[27:29]) - int(f[33:35])), "people waitlisted")
+        # Calculate
+        g = int(a[32:34]) - int(a[25:28])
+        h = int(b[32:34]) - int(b[25:28])
+        i = int(c[32:34]) - int(c[25:28])
+        j = int(d[32:34]) - int(d[25:28])
+        k = int(e[32:34]) - int(e[25:28])
+        l = int(f[27:29]) - int(f[33:35])
+
+        # Parse
+        ts = str(datetime.datetime.now()).split('.')[0]
+        data = {}
+        data['3303-001'] = {
+            'timestamp': ts,
+            'course_name': 'Networks',
+            'course_time': 'TT 11-12',
+            'waitlisted': g
+        }
+        data['3303-003'] = {
+            'timestamp': ts,
+            'course_name': 'Networks',
+            'course_time': 'TT 2-3',
+            'waitlisted': h
+        }
+        data['3330-001'] = {
+            'timestamp': ts,
+            'course_name': 'E-Commerce',
+            'course_time': 'Online',
+            'waitlisted': i
+        }
+        data['4305-002'] = {
+            'timestamp': ts,
+            'course_name': 'Application Development (Java)',
+            'course_time': 'MW 5-7',
+            'waitlisted': j
+        }
+        data['4305-001'] = {
+            'timestamp': ts,
+            'course_name': 'Application Development (Java)',
+            'course_time': 'MW 4-5',
+            'waitlisted': k
+        }
+        data['3304-003'] = {
+            'timestamp': ts,
+            'course_name': 'Database Systems',
+            'course_time': 'TT 5-7',
+            'waitlisted': l
+        }
+        write(data)
+
+
+def write(data):
+    dump = json.dumps(data, indent=4)
+    with open("logs.json", "w") as file:
+        file.write(dump)
+        file.close()
 
 
 if __name__ == "__main__":
